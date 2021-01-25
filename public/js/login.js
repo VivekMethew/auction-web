@@ -49,6 +49,6 @@ function checkLoginUsers(data) {
         // Store
         localStorage.setItem('loginUsers', data.jwtToken);
         localStorage.setItem('loginD', JSON.stringify(data));
-        location.assign("http://localhost:5501/index.html");
+        location.assign("https://vivekmethew.github.io/auction-web/index.html");
     }
 }

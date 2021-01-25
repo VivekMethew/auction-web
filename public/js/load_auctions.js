@@ -75,7 +75,8 @@ function loadCheckValid(auc) {
             document.getElementById('aucTextMessage').style.color = "GREEN";
             // console.log(request.responseText);
             // loadAuctions()
-            location.assign("http://localhost:5501/administration.html");
+            // https://vivekmethew.github.io/auction-web/index.html
+            location.assign("https://vivekmethew.github.io/auction-web/administration.html");
         } else {
             document.getElementById('aucTextMessage').innerHTML = "Failed";
             document.getElementById('aucTextMessage').style.color = "RED";
