@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Saxion Auction site</title>
+    <link rel="stylesheet" href="public/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="banner_image"></div>
+    </header>
+    <!-- Don't forget to only show the options you are allowed to see-->
+    <nav class="auction_nav">
+        <!--        <img src="public/logo.svg"/>-->
+        <a href="index.html">Home</a>
+        <a href="bids.html" id="user_login_bids">My bids</a>
+        <a href="administration.html" id="admin_login_bids">Administration</a>
+        <a href="login.html" id="loginHrefId">Login</a>
+        <a href="#" id="logoutId">Logout</a>
+        <div class="search-container">
+            <form action="/">
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </nav>
+    <main>
+        <div class="row">
+            <form class="login_form" method="" action="">
+                <h1 class="auction_title">Login</h1>
+                <input type="email" placeholder="username" name="email" id="email" />
+                <span id="emailCheck"></span>
+                <input type="password" placeholder="Password" name="pass" id="pass" />
+                <span id="passCheck"></span>
+                <input type="submit" id="loginUsers" value="Login" />
+                <p>You dont have an account, Create new account <a href="register.html">Register</a></p>
+            </form>
+        </div>
+    </main>
+    <script src="public/js/login.js"></script>
+    <script src="public/js/authLogin.js"></script>
+</body>
+
+</html>

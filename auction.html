@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Saxion Auction site</title>
+    <link rel="stylesheet" href="public/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="banner_image"></div>
+    </header>
+    <!-- Don't forget to only show the options you are allowed to see-->
+    <nav class="auction_nav">
+        <!--        <img src="public/logo.svg"/>-->
+        <a class="active" href="index.html">Home</a>
+        <a href="bids.html" id="user_login_bids">My bids</a>
+        <a href="administration.html" id="admin_login_bids">Administration</a>
+        <a href="login.html" id="loginHrefId">Login</a>
+        <a href="#" id="logoutId">Logout</a>
+        <div class="search-container">
+            <form action="/">
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </nav>
+    <main>
+        <div class="row">
+            <section class="auction_detail">
+                <div class="auction_column">
+                    <img src="public/product.jpeg" id="img_urlsId" />
+                </div>
+                <div class="auction_column">
+                    <h1 class="auction_title" id="titleAuction">Title auction</h1>
+                    <p class="auction_description" id="descAuction"></p>
+                    <form method="POST" action="">
+                        <input class="auction_bid_amount" type="text" placeholder="amount" name="bidPrice" id="bidPrice" />
+                        <input class="auction_bid_button" type="submit" id="addBidsBtn" value="Bid" />
+                        <span id="bidAddMessage"></span>
+                        <br>
+                        <br>
+                        <p id="priceCheckValide"></p>
+                    </form>
+                    <div class="auction_detail_bid_list" style="display: none;">
+                        <h2>Bids</h2>
+                        <ul id="bidsList">
+
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script src="public/js/authLogin.js"></script>
+    <script src="public/js/add_bids.js"></script>
+    <script>
+        async function createIndexPageAuctions() {
+
+            await request.addEventListener('readystatechange', () => {
+                if (request.readyState === 4 && request.status === 302) {
+                    const auc_d = JSON.parse(request.responseText)
+                        // console.log(auc_d)
+
+                    document.getElementById('titleAuction').innerHTML = auc_d.aucs.a_name;
+                    document.getElementById('descAuction').innerHTML = auc_d.aucs.desc;
+                    document.getElementById('img_urlsId').src = auc_d.aucs.img_urls;
+                }
+            })
+
+            let getUrls = window.location.search.slice(1);
+            getUrls = getUrls.replace(/=/g, '":"')
+            getUrls = getUrls.replace(/&/g, '","')
+            getUrls = '{"' + getUrls + '"}'
+            getUrls = JSON.parse(getUrls)
+
+            // console.log(getUrls)
+
+
+            request.open('GET', `https://web-api12.herokuapp.com/api/auctions/${getUrls.auc_id}`, true)
+                //Send the proper header information along with the request
+            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            request.setRequestHeader('Authorization', `Bearer ${localStorage.getItem('loginUsers')}`)
+
+            request.send()
+        }
+        createIndexPageAuctions();
+
+        document.getElementById('bidPrice').addEventListener('change', (e) => {
+            e.preventDefault();
+            let valuePr = document.getElementById('bidPrice').value
+            if (valuePr > 15) {
+                // console.log(document.getElementById('bidPrice').value)
+                document.getElementById('priceCheckValide').style.display = "none"
+            } else {
+                document.getElementById('priceCheckValide').innerHTML = "Bid price must be minimum 15 uur"
+                document.getElementById('priceCheckValide').style.color = "RED"
+            }
+        })
+
+
+
+        async function createElements() {
+            await request.addEventListener('readystatechange', () => {
+                if (request.readyState === 4) {
+                    // console.log(JSON.parse(request.responseText));
+                    var li = document.createElement("li");
+                    var span1 = document.createElement("span");
+                    var span2 = document.createElement("span");
+                    var span3 = document.createElement("span");
+
+                    li.className = "auction_detail_bid";
+                    span1.className = "auction_detail_bid_price";
+                    span2.className = "auction_detail_bid_user";
+                    span3.className = "auction_detail_bid_time";
+
+                    var cellText1 = document.createTextNode('auction 1');
+                    var cellText2 = document.createTextNode('36');
+                    var cellText3 = document.createTextNode('12:65');
+
+                    span1.appendChild(cellText1)
+                    span2.appendChild(cellText2)
+                    span3.appendChild(cellText3)
+
+                    li.appendChild(span1)
+                    li.appendChild(span2)
+                    li.appendChild(span3)
+                    document.getElementById('bidsList').appendChild(li)
+                }
+            })
+
+
+            request.open('GET', 'https://web-api12.herokuapp.com/api/bids', true)
+                //Send the proper header information along with the request
+            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            request.setRequestHeader('Authorization', `Bearer ${localStorage.getItem('loginUsers')}`)
+
+            request.send()
+        }
+        // createElements()
+    </script>
+</body>
+
+</html>

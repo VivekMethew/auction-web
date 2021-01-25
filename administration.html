@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Saxion Auction site</title>
+    <link rel="stylesheet" href="public/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="banner_image"></div>
+    </header>
+    <!-- Don't forget to only show the options you are allowed to see-->
+    <nav class="auction_nav">
+        <!--        <img src="public/logo.svg"/>-->
+        <a href="index.html">Home</a>
+        <a href="bids.html" id="user_login_bids">My bids</a>
+        <a href="administration.html" id="admin_login_bids">Administration</a>
+        <a href="login.html" id="loginHrefId">Login</a>
+        <a href="#" id="logoutId">Logout</a>
+        <div class="search-container">
+            <form action="/">
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </nav>
+    <main>
+        <div class="row">
+            <h1 class="auction_title">Add, update or delete auctions</h1>
+        </div>
+        <div class="row">
+            <table id="auctionList">
+
+            </table>
+        </div>
+        <div class="row">
+            <form class="login_form" method="method" action="#" style="padding-right: 50px;">
+                <h1 class="auction_title">Add an auction</h1>
+                <select name="a_type" id="a_type">
+                    <option value="">Select Type Application</option>
+                    <option>Mobile</option>
+                    <option>Desktop</option>
+                    <option>Web</option>
+                </select>
+                <span id="aucType"></span>
+                <input type="text" placeholder="auction name" style="width: 100%; margin: 6px;" name="a_name" id="a_name" /><br>
+                <span id="aucName"></span>
+                <input type="text" placeholder="prices" style="width: 100%; margin: 6px;" name="a_price" id="a_price" /><br>
+                <span id="aucPrice"></span>
+                <input type="time" placeholder="End time" style="width: 100%; margin: 6px;" name="end_time" id="end_time" /><br>
+                <span id="aucTime"></span>
+                <input type="date" placeholder="End date" style="width: 100%; margin: 6px;" name="end_date" id="end_date" /><br>
+                <span id="aucDate"></span>
+                <input type="text" placeholder="image url" style="width: 100%; margin: 6px;" name="img_url" id="img_url" /><br>
+                <span id="aucImgUrl"></span>
+                <textarea placeholder="Description" style="width: 100%; margin: 6px;" name="desc" id="desc" cols="30" rows="5"></textarea><br>
+                <span id="aucDesc"></span>
+                <input type="submit" id="add_auctions" style="width: 30%; margin: 6px;" value="Add" />
+                <span id="aucTextMessage"></span>
+            </form>
+        </div>
+    </main>
+
+    <script src="public/js/load_auctions.js"></script>
+    <script src="public/js/authLogin.js"></script>
+</body>
+
+</html>

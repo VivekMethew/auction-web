@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Saxion Auction site</title>
+    <link rel="stylesheet" href="public/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="banner_image"></div>
+    </header>
+    <!-- Don't forget to only show the options you are allowed to see-->
+    <nav class="auction_nav">
+        <!--        <img src="public/logo.svg"/>-->
+        <a href="index.html">Home</a>
+        <a class="active" href="bids.html">My bids</a>
+        <a href="administration.html">Administration</a>
+        <a href="login.html" id="loginHrefId">Login</a>
+        <a href="#" id="logoutId">Logout</a>
+        <div class="search-container">
+            <form action="/">
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </nav>
+    <main>
+        <div class="row">
+            <h1 class="auction_title">My bids</h1>
+        </div>
+        <div class="row">
+            <table id="bidsList">
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Time</th>
+                    <th>Is best bid?</th>
+                    <th>Remove</th>
+                </tr>
+            </table>
+        </div>
+    </main>
+
+    <script src="public/js/authLogin.js"></script>
+    <script>
+        const request = new XMLHttpRequest();
+        const bidIdArr = [];
+        var loginID = JSON.parse(localStorage.getItem('loginD'))
+        loginID = loginID.tokenId
+            // console.log('Localdetails', loginID)
+        async function loadAuctions() {
+            await request.addEventListener('readystatechange', () => {
+                if (request.readyState === 4) {
+                    // console.log(JSON.parse(request.responseText));
+                    createElements(JSON.parse(request.responseText))
+                }
+            })
+
+
+            request.open('GET', `https://web-api12.herokuapp.com/api/user_bids/${loginID}`, true)
+                //Send the proper header information along with the request
+            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            request.setRequestHeader('Authorization', `Bearer ${localStorage.getItem('loginUsers')}`)
+
+            request.send()
+        }
+
+        function createElements(data) {
+
+            if (data.success) {
+
+                // creates a <table> element and a <tbody> element
+                var tbl = document.createElement("table");
+                var tblBody = document.createElement("tbody");
+
+                // creating all cells
+                for (var i = 0; i < data.bids.length; i++) {
+
+                    let endTime = "12:11 UUR"
+                        // creates a table row
+                    var row = document.createElement("tr");
+
+                    var cell1 = document.createElement("td");
+                    var cell2 = document.createElement("td");
+                    var cell3 = document.createElement("td");
+                    var cell4 = document.createElement("td");
+                    var cell5 = document.createElement("td");
+                    var i2 = document.createElement("i");
+
+                    i2.className = "fa fa-trash"
+                    i2.id = data.bids[i].bid_id
+                    bidIdArr.push({
+                        ids: data.bids[i].bid_id
+                    })
+
+
+
+                    var cellText1 = document.createTextNode(data.bids[i].a_name);
+                    var cellText2 = document.createTextNode(data.bids[i].a_price);
+                    var cellText3 = document.createTextNode(data.bids[i].act_date_time.slice(11, 16) + 'UUR');
+                    var cellText4 = document.createTextNode('yes');
+
+
+
+                    cell1.appendChild(cellText1);
+                    cell2.appendChild(cellText2);
+
+                    cell3.appendChild(cellText3);
+                    cell4.appendChild(cellText4);
+
+                    cell5.appendChild(i2);
+
+                    row.appendChild(cell1);
+                    row.appendChild(cell2);
+                    row.appendChild(cell3);
+                    row.appendChild(cell4);
+                    row.appendChild(cell5);
+
+                    tblBody.appendChild(row)
+
+                    tblBody.appendChild(row)
+                        // add the row to the end of the table body
+                    document.getElementById("bidsList").appendChild(tblBody);
+                }
+            } else {
+                // alert(data.message)
+            }
+        }
+
+        loadAuctions()
+    </script>
+
+</body>
+
+</html>

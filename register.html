@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Saxion Auction site</title>
+    <link rel="stylesheet" href="public/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="banner_image"></div>
+    </header>
+    <!-- Don't forget to only show the options you are allowed to see-->
+    <nav class="auction_nav">
+        <!--        <img src="public/logo.svg"/>-->
+        <a href="index.html">Home</a>
+        <a href="bids.html" id="user_login_bids">My bids</a>
+        <a href="administration.html" id="admin_login_bids">Administration</a>
+        <a href="login.html" id="loginHrefId">Login</a>
+        <a href="#" id="logoutId">Logout</a>
+        <div class="search-container">
+            <form action="/">
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </nav>
+    <main>
+        <div class="row">
+            <form class="register_form" action="/freelencers/sahu/90-master/90-master/src/register.html" method="POST">
+                <h1 class="auction_title">Register</h1>
+                <input type="text" name="name" id="name" placeholder="full name" />
+                <span id="checkName"></span>
+                <input type="email" name="email" id="email" placeholder="email address" />
+                <span id="checkEmail"></span>
+                <input type="password" placeholder="Password" name="password" id="password" />
+                <span id="checkPassword"></span>
+                <input type="text" placeholder="Phone Number" name="phone" id="phone" />
+                <span id="checkPhone"></span>
+                <input type="submit" id="registerUsers" value="Register" />
+                <span id="messageRegisterText"></span>
+
+                <p>You have an allready account please <a href="login.html">Login</a></p>
+            </form>
+        </div>
+    </main>
+
+    <script src="public/js/register.js"></script>
+    <script src="public/js/authLogin.js"></script>
+</body>
+
+</html>

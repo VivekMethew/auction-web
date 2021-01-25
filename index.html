@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Saxion Auction site</title>
+    <link rel="stylesheet" href="public/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="banner_image"></div>
+    </header>
+    <!-- Don't forget to only show the options you are allowed to see-->
+    <nav class="auction_nav">
+        <a class="active" href="index.html">Home</a>
+        <a href="bids.html" id="user_login_bids">My bids</a>
+        <a href="administration.html" id="admin_login_bids">Administration</a>
+        <a href="login.html" id="loginHrefId">Login</a>
+        <a href="#" id="logoutId">Logout</a>
+        <div class="search-container">
+            <form action="/">
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </nav>
+    <main>
+        <div class="row">
+            <p>
+                <!--        Make-->
+                <select name="app_type_auc" id="app_type_auc" style="width: 300px;">
+                    <option selected="" value="all">All Apps</option>
+                    <option value="Mobile">Mobile</option>
+                    <option value="Desktop">Desktop</option>
+                    <option value="Web">Web</option>
+                   
+                </select>
+
+                <!--        Status-->
+                <input type="radio" name="ended" value="all" checked="">
+                <label>All</label>
+                <input type="radio" name="ended" value="true">
+                <label>Running</label>
+                <input type="radio" name="ended" value="false">
+                <label>Finish</label>
+                <!--        Price-->
+                <input class="price_box" type="number" id="over" name="over" value="" placeholder="Min" min="0">
+                <input class="price_box" type="number" id="under" name="under" value="" placeholder="Max" min="0">
+                <button class="btn" onclick="filterButton()">Filter</button>
+            </p>
+        </div>
+        <div class="row" id="auctionCards">
+            <h2 id="EmptyAuction" style="display: none;"></h2>
+        </div>
+    </main>
+
+    <script src="public/js/authLogin.js"></script>
+
+    <script>
+        const request = new XMLHttpRequest();
+        var auc_dd;
+        var filterAuctions;
+
+        function loadAuctions(auc_d) {
+            auc_dd = auc_d
+
+            document.getElementById('auctionCards')
+                // console.log('auction data', auc_d)
+            auc_d.forEach((a) => {
+                // console.log(a.a_name)
+                let atype = a.a_type
+                let aucname = a.a_name
+                let aucdesc = a.desc
+                let aucprice = a.a_price
+                let auc_id = a.auc_id
+                let e_time = a.e_time
+                let e_date = a.e_date
+                let img_urls = a.img_urls
+
+                var leftDate = new Date(e_time + " " + e_date)
+                var now = new Date().getTime()
+                var gap = leftDate - now
+                var endTime = {
+                    second: Math.floor((gap % (1000 * 60)) / 1000),
+                    minute: Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60)),
+                    hour: Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+                    day: Math.floor((gap / (1000 * 60 * 60 * 24))),
+                }
+
+
+                // console.log('Date Time ', endTime.second)
+
+                var section = document.createElement("section");
+                var a = document.createElement("a");
+                var p = document.createElement("a");
+                var div = document.createElement("div");
+                var span1 = document.createElement("span");
+                var span2 = document.createElement("span");
+                var img = document.createElement('img');
+
+                a.className = "auction_title";
+                a.href = `auction.html?aun_name=${aucname}&auc_id=${auc_id}`;
+                p.className = "auction_description";
+                p.style = "padding:10px;"
+                div.className = "auction_bid";
+                div.style = "margin-top:10px;"
+                span1.className = "auction_bid_price";
+                span2.className = "auction_bid_time";
+                img.className = "soft_pic";
+                if (atype === 'Mobile') {
+                    section.className = "auction_box all mobile"
+                }
+                if (atype === 'Desktop') {
+                    section.className = "auction_box all desktop"
+                }
+                if (atype === 'Web') {
+                    section.className = "auction_box all web"
+                }
+                img.src = img_urls
+
+                a.appendChild(document.createTextNode(aucname))
+                p.appendChild(document.createTextNode(aucdesc.slice(0, 100)));
+                span1.appendChild(document.createTextNode(aucprice));
+                span2.appendChild(document.createTextNode(`
+                D : ${endTime.day},
+                H : ${endTime.hour},
+                M : ${endTime.minute},
+                S : ${endTime.second}
+                `));
+
+                div.appendChild(span1)
+                div.appendChild(span2)
+
+                section.appendChild(a)
+                section.appendChild(img)
+                section.appendChild(p)
+                section.appendChild(div)
+
+                document.getElementById('auctionCards').appendChild(section)
+            });
+        }
+
+        // function filterButton() {
+        //     const app_type = document.getElementById('app_type_auc')
+        //     const runnV = document.getElementsByName('ended');
+
+        //     console.log(app_type.value)
+        //     if (app_type.value === 'all' && runnV[0].checked) {
+        //         document.querySelector(".all").style.display = 'none'
+        //     }
+        //     if (app_type.value === 'Mobile' && runnV[0].checked) {
+        //         document.getQuerySelector('.mobile').style.display = 'none'
+        //     }
+        //     if (app_type.value === 'Desktop' && runnV[0].checked) {
+        //         console.log(auc_dd.all_auctions.filter(d => d.a_type === 'Desktop'))
+        //     }
+        //     if (app_type.value === 'Web' && runnV[0].checked) {
+        //         console.log(auc_dd.all_auctions.filter(d => d.a_type === 'Web'))
+        //     }
+        // }
+
+        function createIndexPageAuctions() {
+            request.addEventListener('readystatechange', () => {
+                if (request.readyState === 4 && request.status === 302) {
+                    document.getElementById('EmptyAuction').style.display = "none";
+                    const auc_d = JSON.parse(request.responseText)
+                    loadAuctions(auc_d.all_auctions)
+                } else {
+                    document.getElementById('EmptyAuction').style.display = "block";
+                    document.getElementById('EmptyAuction').innerHTML = "Auction Is Empty";
+                    document.getElementById('EmptyAuction').style.color = "#2ecc71"
+                    document.getElementById('EmptyAuction').style.width = "100"
+                    document.getElementById('EmptyAuction').style.fontWeight = "800"
+                }
+            })
+
+
+            request.open('GET', 'https://web-api12.herokuapp.com/api/auctions', true)
+                //Send the proper header information along with the request
+            request.setRequestHeader('Content-type', 'application/json');
+
+            request.send()
+        }
+        createIndexPageAuctions();
+        var x = document.getElementsByClassName(".auction_box.all");
+        console.log('Element Value', x)
+    </script>
+</body>
+
+</html>
