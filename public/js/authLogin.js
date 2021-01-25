@@ -16,7 +16,5 @@ document.getElementById('logoutId').addEventListener('click', (e) => {
     e.preventDefault();
     localStorage.removeItem('loginUsers')
     localStorage.removeItem('loginD')
-    alert('logout')
-        // https://vivekmethew.github.io/auction-web/
     location.assign("https://vivekmethew.github.io/auction-web/index.html");
 })
